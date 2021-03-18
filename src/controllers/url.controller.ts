@@ -1,12 +1,9 @@
 import * as express from "express"
+import {
+  IEncodedUrlParams,
+  IDecodeUrlParams
+} from "../interfaces/url.interface"
 
-interface EncodedUrlParams {
-    url: string
-}
-
-interface DecodeUrlParams {
-    randomString: string
-}
 // Use DB if we want to persist the data and want the functionality works well even after app is restarted
 namespace UrlController {
   const dict = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -17,7 +14,7 @@ namespace UrlController {
     req: express.Request,
     res: express.Response
   ) => {
-    const { url } = req.body as EncodedUrlParams
+    const { url } = req.body as IEncodedUrlParams
 
     if (!url) {
       res.send("URL is required param").status(400)
@@ -56,7 +53,7 @@ namespace UrlController {
     req: express.Request,
     res: express.Response
   ) => {
-    const { randomString } = req.params as DecodeUrlParams
+    const { randomString } = req.params as IDecodeUrlParams
     const url: string | undefined = short2long.get(randomString)
     if (!url) {
       res.send("No such encoding").status(409)
