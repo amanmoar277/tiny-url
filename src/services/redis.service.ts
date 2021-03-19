@@ -1,7 +1,7 @@
 import * as redis from "redis"
 
 export namespace RedisService {
-  let client;
+  let client
 
   export const connect = async () => {
     client = redis.createClient(process.env.REDIS_URL)

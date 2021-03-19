@@ -9,6 +9,8 @@
     "dev-watch": "nodemon",
     "build": "npm run tsc",
     "start": "npm run tsc && node ./dist/index.js",
+    "start-pm2": "npm run tsc && pm2-runtime start ecosystem.config.js --env production && pm2 save",
+    "stop-pm2": "NODE_ENV=production  pm2 stop ecosystem.config.js --only job-scheduler",
     "tslint": "tslint --project ./",
     "prettier-all": "prettier --write 'src/**/*.+(ts|tsx|js|css|json)'",
     "precompile": "npm run prettier-all && npm run tslint"

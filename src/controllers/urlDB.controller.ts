@@ -2,26 +2,32 @@ import * as express from "express"
 import RedisService from "../services/redis.service"
 import UrlService from "../services/url.service"
 
-const getValueFromResources = async ({longURL, shortURL}: {longURL?: string, shortURL?: string}) => {
-    const url = longURL || shortURL
-    const redisClient = RedisService.getClient()
-    const getFromCache = await new Promise((resolve, reject) => {
-        redisClient.get(url, (err, result) => {
-            // console.log(result)
-            resolve(result)
-        })
+const getValueFromResources = async ({
+  longURL,
+  shortURL
+}: {
+  longURL?: string
+  shortURL?: string
+}) => {
+  const url = longURL || shortURL
+  const redisClient = RedisService.getClient()
+  const getFromCache = await new Promise((resolve, reject) => {
+    redisClient.get(url, (err, result) => {
+      // console.log(result)
+      resolve(result)
     })
-    
-    console.log(getFromCache,'getFromCache')
-    if(getFromCache) {
-        return getFromCache
-    }
-    const getFromDB = await UrlService.get({
-        ...(longURL && { longURL }),
-        ...(shortURL && { shortURL }),
-    })
-    console.log(getFromDB,'getFromDB')
-    return getFromDB && getFromDB.shortURL;
+  })
+
+  console.log(getFromCache, "getFromCache")
+  if (getFromCache) {
+    return getFromCache
+  }
+  const getFromDB = await UrlService.get({
+    ...(longURL && { longURL }),
+    ...(shortURL && { shortURL })
+  })
+  console.log(getFromDB, "getFromDB")
+  return getFromDB && getFromDB.shortURL
 }
 
 namespace UrlController {
@@ -31,7 +37,7 @@ namespace UrlController {
     req: express.Request,
     res: express.Response
   ) => {
-    const start = Date.now();
+    const start = Date.now()
     const { url } = req.body
 
     if (!url) {
@@ -40,7 +46,7 @@ namespace UrlController {
 
     // logic starts from here
     const redisClient = await RedisService.getClient()
-    const shortURLFromResources = await getValueFromResources({longURL: url})
+    const shortURLFromResources = await getValueFromResources({ longURL: url })
 
     if (shortURLFromResources) {
       res
@@ -58,7 +64,7 @@ namespace UrlController {
     }
 
     let randomString = randomStringArray.join("")
-    while (await getValueFromResources({shortURL: randomString})) {
+    while (await getValueFromResources({ shortURL: randomString })) {
       randomStringArray[idx] = dict[(Math.random() * 61).toFixed()]
       idx = (idx + 1) % 6
     }
@@ -67,12 +73,20 @@ namespace UrlController {
     await UrlService.set(url, randomString)
 
     Promise.all([
-        redisClient.set(url, randomString),
-        redisClient.set(randomString, url)
+      redisClient.set(url, randomString),
+      redisClient.set(randomString, url)
     ])
 
-    const end = Date.now();
-    console.log('value-> ', randomString, 'resolved in-> ', Math.floor((end - start)), 'milliSec or', Math.floor((end - start)/1000), 's')
+    const end = Date.now()
+    console.log(
+      "value-> ",
+      randomString,
+      "resolved in-> ",
+      Math.floor(end - start),
+      "milliSec or",
+      Math.floor((end - start) / 1000),
+      "s"
+    )
     res.send({ url: `${process.env.APP_BASE_URL + randomString}` }).status(200)
   }
 
@@ -82,7 +96,7 @@ namespace UrlController {
   ) => {
     const { randomString } = req.params
 
-    const url = await getValueFromResources({ shortURL: randomString})
+    const url = await getValueFromResources({ shortURL: randomString })
     if (!url) {
       res.send("No such encoding ").status(409)
       return

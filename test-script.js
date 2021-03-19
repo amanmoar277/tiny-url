@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
 
-for(let i = 0; i < 3000; i++) {
+for(let i = 0; i < 1000; i++) {
     fetch("http://localhost:5000/api/encode", { 
       
         // Adding method type 
@@ -8,7 +8,7 @@ for(let i = 0; i < 3000; i++) {
         
         // Adding body or contents to send 
         body: JSON.stringify({ 
-            "url": `https://www.youtube.com/${i}`
+            "url": `https://www.youtube1.com/${i}`
         }), 
         
         // Adding headers to the request 
