@@ -103,4 +103,6 @@ dist
 # TernJS port file
 .tern-port
 
-python-scripts-to-test/generated-data/*
+python-scripts-to-test/generated-data/decode_API_status.csv
+python-scripts-to-test/generated-data/encoded_data.csv
+python-scripts-to-test/generated-data/raw_urls_payload.json
