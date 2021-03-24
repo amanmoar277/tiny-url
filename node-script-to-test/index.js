@@ -1,4 +1,3 @@
-
 const fetch = require("node-fetch");
 
 async function encode(){
@@ -20,27 +19,21 @@ async function encode(){
         })
     
         promiseArray.push(pendingPromise)
-        // setTimeout(() => {}, 2000)
-
-        // console.log(i)
     }
     const result = await Promise.all(promiseArray);
 
     const jsonResponse = await Promise.all(result.map(x => x.json()));
     const urls = await Promise.all(jsonResponse.map(x => x.url));
-    // console.log(urls)
-
-    await decode(urls);
-
+    console.log(urls);
+    
+    return urls;
 }
 
 async function decode(urls){
     const promiseArray = [];
     urls = urls.map(url => url.replace('https://tiny-url-service.com/', 'http://localhost:5000/'))
-    console.log(urls)
     urls.forEach(url => {
-        // console.log(url)
-        const pendingPromise = fetch(url, { 
+        const pendingPromise = fetch(url+'', { 
             // Adding method type 
             method: "GET", 
             
@@ -51,18 +44,22 @@ async function decode(urls){
         }).catch(e => console.log('Hi'))
     
         promiseArray.push(pendingPromise)
-        // setTimeout(() => {}, 2000)
-
-        // console.log(url)
     })
     const result = await Promise.all(promiseArray);
 
-    // const jsonResponse = await Promise.all(result.map(x => x.json()));
-    // const urlss = await Promise.all(jsonResponse.map(x => x.status_code));
-
-    console.log(result)
-    return result.map(x => x.status);
+    result.forEach(async x => {
+        try {
+            const json = await x.json()
+            console.log('Not Redirected for -> ' + x.url)
+        } catch (e) {
+            console.log('Redirected for -> ' + x.url)
+        }
+    })
 }
 
-const resolvedPromises = encode()
-// console.log(resolvedPromises)
+async function main() {
+    const urls = await encode();
+    await decode(urls);
+}
+
+main();
