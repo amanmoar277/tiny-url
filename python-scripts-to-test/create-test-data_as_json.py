@@ -16,7 +16,7 @@ def main():
         urls.append(urlObj)
 
     print("start writing now->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    with open('./generated-data/raw_urls_payload.json', 'w') as outfile:
+    with open('./python-scripts-to-test/generated-data/raw_urls_payload.json', 'w') as outfile:
         json.dump({"values": urls}, outfile, indent=2)
 
     print("End")

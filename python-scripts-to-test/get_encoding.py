@@ -16,8 +16,8 @@ SERVICE_BASE_URL = 'http://localhost:5000/'
 API_ENDPOINT = SERVICE_BASE_URL + 'api/encode'
 
 def main():
-    output_file_name = 'generated-data/encoded_data.csv'
-    input_data_file = open(os.getcwd() + '/generated-data/raw_urls_payload.json')
+    output_file_name = 'python-scripts-to-test/generated-data/encoded_data.csv'
+    input_data_file = open(os.getcwd() + '/python-scripts-to-test/generated-data/raw_urls_payload.json')
     json_data = json.load(input_data_file)
 
     data = json_data["values"]

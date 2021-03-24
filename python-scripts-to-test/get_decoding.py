@@ -14,11 +14,11 @@ csvHeaders = [ 'tinyURL', 'statusCode' ]
 resdCsvHeaders = [ 'originalURL', 'tinyURL' ]
 
 def main():
-    file = open(os.getcwd() + '/generated-data/encoded_data.csv')
+    file = open(os.getcwd() + '/python-scripts-to-test/generated-data/encoded_data.csv')
 	
     data = []
     data = csv.DictReader(file, fieldnames = resdCsvHeaders)
-    output_file_name = "generated-data/decode_API_status.csv"
+    output_file_name = "python-scripts-to-test/generated-data/decode_API_status.csv"
 
     header_detail = {'content-type': 'application/json'}
     errored_value = []
