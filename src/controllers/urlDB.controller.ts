@@ -45,7 +45,6 @@ namespace UrlController {
     }
 
     // logic starts from here
-    const redisClient = await RedisService.getClient()
     const shortURLFromResources = await getValueFromResources({ longURL: url })
 
     if (shortURLFromResources) {
@@ -72,6 +71,7 @@ namespace UrlController {
 
     await UrlService.set(url, randomString)
 
+    const redisClient = await RedisService.getClient()
     Promise.all([
       redisClient.set(url, randomString),
       redisClient.set(randomString, url)
@@ -87,7 +87,7 @@ namespace UrlController {
       Math.floor((end - start) / 1000),
       "s"
     )
-    res.send({ url: `${process.env.APP_BASE_URL}api/${shortURLFromResources}` }).status(200)
+    res.send({ url: `${process.env.APP_BASE_URL}api/${randomString}` }).status(200)
   }
 
   export const decodeUrl = async (
