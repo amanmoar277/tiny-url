@@ -1,5 +1,5 @@
 import * as express from "express"
-import UrlController from "./controllers/url.controller"
+import UrlController from "./controllers/urlDB.controller"
 import errorWrapper from "./utils/errorWrapper"
 
 const router: express.Router = express.Router()

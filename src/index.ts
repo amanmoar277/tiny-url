@@ -1,6 +1,8 @@
 import * as express from "express"
 import * as cors from "cors"
 import * as bodyParser from "body-parser"
+import DBService from "./services/db.service"
+import RedisService from "./services/redis.service"
 import { router } from "./routes"
 
 export const app: express.Application = express()
@@ -28,6 +30,8 @@ const initMiddlewares = () => {
 const main = async () => {
   initConfig()
   initMiddlewares()
+  await DBService.connect()
+  await RedisService.connect()
 
   app.listen(PORT, err => {
     if (err) {
