@@ -51,7 +51,7 @@ namespace UrlController {
     if (shortURLFromResources) {
       res
         .send({
-          url: `${process.env.APP_BASE_URL + shortURLFromResources}`
+          url: `${process.env.APP_BASE_URL}api/${shortURLFromResources}`
         })
         .status(200)
       return
@@ -87,7 +87,7 @@ namespace UrlController {
       Math.floor((end - start) / 1000),
       "s"
     )
-    res.send({ url: `${process.env.APP_BASE_URL + randomString}` }).status(200)
+    res.send({ url: `${process.env.APP_BASE_URL}api/${shortURLFromResources}` }).status(200)
   }
 
   export const decodeUrl = async (
@@ -98,7 +98,7 @@ namespace UrlController {
 
     const url = await getValueFromResources({ shortURL: randomString })
     if (!url) {
-      res.send("No such encoding ").status(409)
+      res.send({message: "No such encoding "}).status(409)
       return
     }
     res.redirect(url)
