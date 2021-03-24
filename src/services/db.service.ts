@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection } from "mongodb"
-import {allDBS, COLLECTIONS } from "../config/constants"
+import { allDBS, COLLECTIONS } from "../config/constants"
 
 type ACollections = {
   [key in keyof typeof COLLECTIONS]: Collection
